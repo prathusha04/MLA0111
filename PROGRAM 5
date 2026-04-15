@@ -1,0 +1,33 @@
+from collections import deque
+
+def water_jug(a, b, target):
+    visited = set()
+    q = deque([(0, 0)])
+
+    while q:
+        x, y = q.popleft()
+        print(x, y)
+
+        if x == target or y == target:
+            return
+
+        if (x, y) in visited:
+            continue
+        visited.add((x, y))
+
+        # possible moves
+        q.append((a, y))          # fill A
+        q.append((x, b))          # fill B
+        q.append((0, y))          # empty A
+        q.append((x, 0))          # empty B
+
+        # pour A → B
+        pour = min(x, b - y)
+        q.append((x - pour, y + pour))
+
+        # pour B → A
+        pour = min(y, a - x)
+        q.append((x + pour, y - pour))
+
+# 5L and 3L jugs, target = 4L
+water_jug(5, 3, 4)
